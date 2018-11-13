@@ -29,9 +29,7 @@ public class Swagger2Config {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("word-cloud工程Api文档")
-                .description("简单优雅的restful风格")
-                .termsOfServiceUrl("wangfeixong.cn")
+                .title("word-cloud工程 Api文档")
                 .version("1.0")
                 .build();
     }

@@ -1,2 +1,2 @@
-img:
-  path: D:/
+server:
+  port: 8080

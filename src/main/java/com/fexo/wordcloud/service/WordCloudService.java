@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -26,10 +27,9 @@ import java.util.List;
 @Service
 public class WordCloudService {
 
-    @Value("${img.path}")
-    private String path;
 
-    public String getImg(String imgPath,String text) throws IOException {
+
+    public String getImg(String text,OutputStream outputStream) throws IOException {
         //建立词频分析器，设置词频，以及词语最短长度，此处的参数配置视情况而定即可
         FrequencyAnalyzer frequencyAnalyzer = new FrequencyAnalyzer();
         frequencyAnalyzer.setWordFrequenciesToReturn(600);
@@ -57,10 +57,10 @@ public class WordCloudService {
         wordCloud.setFontScalar(new SqrtFontScalar(12, 45));
         //生成词云
         wordCloud.build(wordFrequencyList);
-       String   fileName=LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
-        String filePath = path + fileName.toString() + ".png";
-        wordCloud.writeToFile(filePath);
-        return filePath;
+        wordCloud.writeToStreamAsPNG(outputStream);
+
+        String   fileName= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
+        return fileName.toString() + ".png";
     }
 
 }

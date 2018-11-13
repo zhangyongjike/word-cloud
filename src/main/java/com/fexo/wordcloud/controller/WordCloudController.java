@@ -1,26 +1,28 @@
 package com.fexo.wordcloud.controller;
 
-import com.fexo.wordcloud.entry.Message;
 import com.fexo.wordcloud.service.WordCloudService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- *  @author  wangfeixiong
+ * @author wangfeixiong
  */
+@Api(description = "生成词语的接口类")
 @RestController
 public class WordCloudController {
 
-   @Autowired
-  private WordCloudService service;
+    @Autowired
+    private WordCloudService service;
 
-    @PostMapping("getImg")
-    public Message<String> getWordCloudImg(@RequestBody  String text) throws IOException {
-       String filePath= service.getImg("", text);
-        return new Message<>(200, filePath);
+    @ApiOperation(value = "获取词云图片的方法")
+    @PostMapping("getWordCouldImage")
+    public void getWordCloudImg(@ApiParam(value = "生成词云图片的文字") @RequestBody String text,
+                                HttpServletResponse response) throws IOException {
+        response.setContentType("image/png");
+        service.getImg(text, response.getOutputStream());
     }
 }
